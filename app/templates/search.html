@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block content %}
+
+                {% comment %} if(isset($_POST['effect']))
+                {
+                    $effect_ID = key($_POST['effect']) ?? 0;
+                    if(is_bool($_SESSION['search']['effect'][$effect_ID]['type'] ?? '')) $_SESSION['search']['effect'][$effect_ID]['type'] = !$_SESSION['search']['effect'][$effect_ID]['type'];
+                    else $_SESSION['search']['effect'][$effect_ID] = array('type' => true);
+                }
+                elseif(isset($_POST['color']))
+                {
+                    $color_ID = key($_POST['color']) ?? 0;
+                    if(is_bool($_SESSION['search']['color'][$color_ID]['type'] ?? '')) $_SESSION['search']['color'][$color_ID]['type'] = !$_SESSION['search']['color'][$color_ID]['type'];
+                    else $_SESSION['search']['color'][$color_ID] = array('type' => true); 
+                }
+                else unset($_SESSION['search']);
+                $effects = array(); $colors = array();
+                foreach($_SESSION['search']['effect'] ?? [] as $effect_ID => $effect)
+                {
+                    if($effect['type'])
+                    {
+                        echo "<style>";
+                        echo "    .effects > form:nth-child($effect_ID) > input";
+                        echo "    {";
+                        echo "        border: 3px solid darkslategray;";
+                        echo "        background-color: rgb(63, 63, 63, 0.25);";
+                        echo "        color: #444444;";
+                        echo "    }";
+                        echo "</style>";
+                        $effects[] = $effect_ID;
+                    }
+                }
+                foreach($_SESSION['search']['color'] ?? [] as $color_ID => $color)
+                {
+                    if($color['type'])
+                    {
+                        echo "<style>";
+                        echo "    .colors > form:nth-child($color_ID) > input";
+                        echo "    {";
+                        echo "        border: 3px solid darkslategray;";
+                        echo "        background-color: rgb(63, 63, 63, 0.25);";
+                        echo "        color: #444444;";
+                        echo "    }";
+                        echo "</style>";
+                        $colors[] = $color_ID;
+                    }
+                } //print_r($effects); //print_r($colors);
+                $request = $_GET["search"];
+                echo "<h2>Фильтры категорий:</h2>";
+                echo "  <h3>эффект:</h3>";
+                echo "      <div class='effects'>";
+                $lines = $mysql->query("SELECT * FROM effect"); while($row = $lines->fetch_assoc() ?? null) echo "<form method='POST'><input type='submit' name='effect[".$row["ID"]."]' value='".$row["Name"]."'></form>";
+                echo "      </div>";
+                echo "  <h3>цвет:</h3>";
+                echo "      <div class='colors'>";
+                $lines = $mysql->query("SELECT * FROM color"); while($row = $lines->fetch_assoc() ?? null) echo "<form method='POST'><input type='submit' name='color[".$row["ID"]."]' value='".$row["Name"]."'></form>";
+                echo "      </div>"; {% endcomment %}
+                {% comment %} if($request != "" || $effects != [] || $colors != []) {% endcomment %} <h1>Результаты поиска: {{ request }}</h1> 
+                {% comment %} $users = array();
+                $products = array();  {% endcomment %}
+                <div class='min-h-[689px] h-auto flex flex-wrap pl-0 pr-[130px] pt-[30px] justify-between'>
+                {% comment %} if($request != "" || $effects != [] || $colors != [])
+                {
+                    if(isset($_SESSION['AdminID']))
+                    {
+                        $lines = $mysql->query("SELECT * FROM user"); while($row = $lines->fetch_assoc() ?? null) if(strpos(mb_strtolower(" ".$row['ID']), mb_strtolower($request))) $users[$row["ID"]] = $row;
+                        $lines = $mysql->query("SELECT * FROM user"); while($row = $lines->fetch_assoc() ?? null) if(strpos(mb_strtolower(" ".$row['Name']), mb_strtolower($request))) $users[$row["ID"]] = $row;
+                        $lines = $mysql->query("SELECT * FROM user"); while($row = $lines->fetch_assoc() ?? null) if(strpos(mb_strtolower(" ".$row['Email']), mb_strtolower($request))) $users[$row["ID"]] = $row;
+                        $lines = $mysql->query("SELECT * FROM user"); while($row = $lines->fetch_assoc() ?? null) if(strpos(mb_strtolower(" ".$row['Phone_number']), mb_strtolower($request))) $users[$row["ID"]] = $row;
+                    }
+                    $lines = $mysql->query("SELECT * FROM product"); while($row = $lines->fetch_assoc() ?? null) if((strpos(mb_strtolower(" ".$row['ID']), mb_strtolower($request)) || $request == "") && (in_array($row['Effect_ID'], $effects) || in_array($row['Color_ID'], $colors) || ($effects == [] && $colors == []))) $products[$row["ID"]] = $row; //$lines = $mysql->query("SELECT * FROM product")->fatch_all(MYSQLI_ASSOC); $lines1 = array(); while($row = $lines->fetch_assoc() ?? null) $lines1[] = $row; //print_r($orders); $lines2 = array_values($lines1); while($row = $lines2->fetch_assoc() ?? null) if(...) $products[$row["ID"]] = $row;
+                    $lines = $mysql->query("SELECT * FROM product"); while($row = $lines->fetch_assoc() ?? null) if((strpos(mb_strtolower(" ".$row['Name']), mb_strtolower($request)) || $request == "") && (in_array($row['Effect_ID'], $effects) || in_array($row['Color_ID'], $colors) || ($effects == [] && $colors == []))) $products[$row["ID"]] = $row; //echo "<p>".mb_strtolower($row['Name'])."</p>"; //echo "<p>".mb_strtolower($request)."</p>";
+                    $lines = $mysql->query("SELECT * FROM product"); while($row = $lines->fetch_assoc() ?? null) if((strpos(mb_strtolower(" ".$mysql->query("SELECT * FROM effect WHERE ID = '".$row['Effect_ID']."'")->fetch_assoc()['Name']), mb_strtolower($request)) || $request == "") && (in_array($row['Effect_ID'], $effects) || in_array($row['Color_ID'], $colors) || ($effects == [] && $colors == []))) $products[$row["ID"]] = $row;
+                    $lines = $mysql->query("SELECT * FROM product"); while($row = $lines->fetch_assoc() ?? null) if((strpos(mb_strtolower(" ".$mysql->query("SELECT * FROM color WHERE ID = '".$row['Color_ID']."'")->fetch_assoc()['Name']), mb_strtolower($request)) || $request == "") && (in_array($row['Effect_ID'], $effects) || in_array($row['Color_ID'], $colors) || ($effects == [] && $colors == []))) $products[$row["ID"]] = $row;
+                    $lines = $mysql->query("SELECT * FROM product"); while($row = $lines->fetch_assoc() ?? null) if((strpos(mb_strtolower(" ".$row['Description']), mb_strtolower($request)) || $request == "") && (in_array($row['Effect_ID'], $effects) || in_array($row['Color_ID'], $colors) || ($effects == [] && $colors == []))) $products[$row["ID"]] = $row;
+                    $error = true; {% endcomment %}
+                    {% comment %} foreach($users as $user)
+                    {
+                        $UserID = $user['ID'];
+                        $name = $user['Name'];
+                        $status = $user['Status'];
+                        echo "<div class='product'>";
+                        echo "    <h3>$name</h3>";
+                        echo "    <span>ID: $UserID Status: $status</span>";
+                        echo "    <form method='POST' action='personal_area.php'>";
+                        if($_SESSION['AdminID'] == 0 || $status < $mysql->query("SELECT * FROM user WHERE ID = '".$_SESSION['AdminID']."'")->fetch_assoc()['Status']) 
+                            echo "    <input type='submit' name='user[$UserID]' value='ПОСМОТРЕТЬ'>";
+                        echo "    </form>";
+                        echo "</div>";
+                        $error = false;
+                    } {% endcomment %}
+                    {% for product in products %}
+                        {% comment %} $product_id = $product['ID'];
+                        $name = $product['Name'];
+                        $image = $product['Image'];
+                        $price = $product['Price']; {% endcomment %}
+                        <div class='w-[270px] h-[330px] p-[10px] border border-black border-b-[7px] border-r-[3px] text-center mr-[40px] mb-[40px] text-[16pt] bg-[#707070] font-["Roboto"] rounded-[35px]'>
+                            <img src="{{ product.image.url }}" class='w-[200px] h-[200px] rounded-[25px] mx-auto'>
+                            <h3 class='font-bold text-2xl'>{{ product.name }}</h3>
+                            <span class='font-bold'>${{ product.price }}</span>
+                            <form method='GET' action="{% url 'product_page' id=product.id %}">
+                                <input type='submit' name="shop[{{ product.id }}]" value='КУПИТЬ' class="w-[100px] h-[30px] border-[5px] border-[#619648] rounded-[15px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">
+                            </form>
+                        </div>
+                        {% comment %} $error = false; {% endcomment %}
+                    {% endfor %}
+
+                    
+
+                    {% comment %} if($error) echo "<h3>НИЧЕГО НЕ НАЙДЕНО!</h3>"; {% endcomment %}
+                {% comment %} } {% endcomment %}
+                {% comment %} else echo "<h3>ЗАДАН ПУСТОЙ ЗАПРОС!</h3>"; {% endcomment %}
+                </div>
+            {% comment %} <style>
+                .effects > form > input:hover
+                {
+                    border: 3px solid white;
+                    background-color: rgb(255, 255, 255, 0.25);
+                    color: #ffffff;
+                }
+
+                .colors > form > input:hover
+                {
+                    border: 3px solid white;
+                    background-color: rgb(255, 255, 255, 0.25);
+                    color: #ffffff;
+                }
+            </style> {% endcomment %}
+
+{% endblock %}

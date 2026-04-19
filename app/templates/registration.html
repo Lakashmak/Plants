@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="inline-block">
+    <form method='POST' class="relative bg-[#707070] w-[500px] mt-[50px] p-[15px] rounded-[25px] border border-black border-b-[7px] border-r-[3px] space-y-4 ml-[175px] text-center font-['Roboto']">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">Зарегестрироваться</button>
+    </form>
+</div>
+
+{% endblock %}

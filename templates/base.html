@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru" class="p=0 m-0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% comment %} <link rel="stylesheet" href="{{ link }}static/css/styles.css"> {% endcomment %}
+    <link rel="stylesheet" href="{{ link }}static/css/{{ name }}.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style> @font-face { font-family: 'Roboto'; src: url({{ link }}static/fonts/Roboto.ttf); } </style>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+</head>
+<body class="bg-[#777777]">
+    <div class="w-[1280px] min-h-[1892px] h-auto m-auto border border-black overflow-hidden">
+        <header class="h-[82px] bg-[#619648] flex justify-between border-b border-black">
+            <input type="submit" name="" value="" id="btn" class="w-[64px] h-[64px] border-0 float-left ml-[10px] mt-[10px] outline-none bg-[url('{{ link }}static/img/three_strips.png')] bg-no-repeat bg-[0px_0px]">
+            <h2 class="font-bold text-white font-['Roboto'] text-[45pt] m-auto inline-block justify-center">PLANTS</h2>
+            <a href="{% url 'basket' %}"><i class="fa fa-shopping-basket text-white text-[30pt] m-[20px] float-right" aria-hidden="true"></i></a>
+        </header>
+        <div id="side-menu" class="relative float-left left-[-175px] w-[175px] bg-[#619648] transition-transform duration-300 inline-block mr-[25px]">
+            <form action="{% url 'search' %}" method="GET" id="searchForm" class="search">
+                <input type="text" id="search" name="search" placeholder='поиск товаров' class="w-[150px] h-[30px] border border-color-[#e1e1e1] left mt-[15px] ml-[10px] outline-none bg-[url('{{ link }}static/img/magnifire.png')] bg-no-repeat bg-[115px_-2px] pl-[5px] pr-[35px]">
+            </form>
+            <ul class="m-[15px] text-white font-['Roboto']">
+                <li><a href="{% url 'home' %}">Главная страница</a></li>
+                {% comment %} <li><a href="{% url 'search' %}">Поиск</a></li> {% endcomment %}
+                {% if user_id %}
+                    <li><a href="{% url 'personal_area' %}">Личный кабинет</a></li>
+                    <li><a href="{% url 'order_list' %}">Список заказов</a></li>
+                {% else %}
+                    <li><a href="{% url 'login_page' %}">Авторизация</a></li>
+                {% endif %}
+                {% comment %} <li><a href="{% url 'registration' %}">Регистрация</a></li> {% endcomment %}
+                <li><a href="{% url 'basket' %}">Корзина</a></li>
+            </ul>
+        </div>
+        
+        <main class="min-h-[1391px] h-auto bg-white min-h-[1491px] bg-none"> <!-- min-h-[1391px] h-auto bg-white pl-[200px] pt-[64px] min-h-[1491px] -->
+            {% block content %}
+
+            {% endblock %}
+            <h class="text-[50px] font-['Roboto'] ml-60">{{ massange }}</h>
+        </main>
+        <footer class="h-[404px] border-t border-black">
+            <div class="min-h-[357px] bg-[#619648] pl-[185px] pr-[185px] pt-[40px] flex justify-between">
+                <div>
+                    <h2 class="font-bold text-[20pt] mb-[12px] text-white font-['Roboto']">FEATURED SALES</h2>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Alexis Hudson</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> American Apparel</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Ben Sherman</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Big Buddha</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Chanel</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Christian Audigier</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Coach</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Cole Haan</a>
+                </div>
+                <div>
+                    <h2 class="font-bold text-[20pt] mb-[12px] text-white font-['Roboto']">MANS STORE</h2>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Alexis Hudson</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> American Apparel</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Ben Sherman</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Big Buddha</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Chanel</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Christian Audigier</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Coach</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Cole Haan</a>
+                </div>
+                <div>
+                    <h2 class="font-bold text-[20pt] mb-[12px] text-white font-['Roboto']">WOMAN STORE</h2>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Alexis Hudson</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> American Apparel</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Ben Sherman</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Big Buddha</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Chanel</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Christian Audigier</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Coach</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Cole Haan</a>
+                </div>
+                <div>
+                    <h2 class="font-bold text-[20pt] mb-[12px] text-white font-['Roboto']">QUICK LINKS</h2>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Alexis Hudson</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> American Apparel</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Ben Sherman</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Big Buddha</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Chanel</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Christian Audigier</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Coach</a>
+                    <a href="#" class="no-underline text-white block leading-[1.9] font-['Roboto'] hover:underline"> Cole Haan</a>
+                </div>
+            </div>
+            <div class="h-[46px] bg-[#619648] flex items-center justify-center text-white font-['Roboto'] border-t border-black">Copyright 2024 Lakashmak</div>
+        </footer>
+    </div>
+    <script src="{{ link }}static/js/main.js"></script>
+    <script src="{{ link }}static/js/{{ name }}.js"></script>
+</body>
+</html>

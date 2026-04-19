@@ -1,0 +1,94 @@
+main
+{
+    padding-left: 0px;
+}
+
+/* .products
+{
+    height: auto;
+    padding-top: 30px;
+} */
+
+.products > h2
+{
+    margin-left: 540px;
+}
+
+.product
+{
+    margin: auto;
+    display: block;
+    width: 550px;
+    height: 100px;
+    border: 2px solid black;
+    margin-top: 10px;
+    font-size: 16pt;
+    border-radius: 10px;
+    background-color: #7f7f7f;
+}
+
+.prod-image
+{
+    width: 90px;
+    height: 90px;
+    margin: 5px;
+    float: left;
+}
+
+.prod-text > h2
+{
+    width: 300px;
+    margin-top: 27px;
+    margin-left: 10px;
+    font-size: 25pt;
+    float: left;
+}
+
+.prod-text > span
+{
+    margin-top: 35px;
+    margin-left: 10px;
+    font-size: 18pt;
+    float: left;
+}
+
+.prod-text > form
+{
+    display: inline-block;
+}
+
+.prod-text > form > input
+{
+    margin-top: 35px;
+    margin-left: 10px;
+    padding-left: 5px;
+    font-size: 16pt;
+    width: 40px;
+}
+
+main > a
+{
+    text-decoration: none;
+}
+
+main > a > input
+{
+    margin: auto;
+    display: block;
+    margin-top: 15px;
+    font-size: 16pt;
+    width: 300px;
+    height: 50px;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: rgb(0, 0, 0, 0.25);
+    font-size: 16pt;
+    outline: none;
+}
+
+main > a > input:hover /*наведение*/
+{
+    border: 3px solid white;
+    background-color: rgb(255, 255, 255, 0.25);
+    color: #ffffff;
+}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+                {% comment %} if(isset($_POST['delete'])) $mysql->query("DELETE FROM user WHERE ID = '$UserID'"); {% endcomment %}
+                {% comment %} if(isset($_POST['admin']))
+                {
+                    $AdminID = $_SESSION['AdminID'] ?? '';
+                    if($AdminID == '') 
+                    {
+                        $_SESSION['AdminID'] = $UserID;
+                        //unset($_SESSION['UserID']);
+                    }
+                    else 
+                    {
+                        unset($_SESSION['per']);
+                        $_SESSION['UserID'] = $AdminID;
+                        unset($_SESSION['AdminID']);
+                    }
+                    header("Location: personal_area.php");
+                } {% endcomment %}
+                {% comment %} if(isset($_POST['button']))
+                {
+                    $name1 = $_SESSION['per']['name'] = $_POST['name'] ?? '';
+                    $phone1 = $_SESSION['per']['phone'] = $_POST['phone'] ?? 0;
+                    $email1 = $_SESSION['per']['email'] = $_POST['email'] ?? '';
+                    $address1 = $_SESSION['per']['address'] = $_POST['address'] ?? '';
+                    $password1 = $_SESSION['per']['password'] = $_POST['password'] ?? '';
+                    $repassword1 = $_SESSION['per']['repassword'] = $_POST['repassword'] ?? '';
+                    $status1 = $_SESSION['per']['status'] = $_POST['status'] ?? ''; //if($_SESSION['AdminID'] == 0 || $status2 < $mysql->query("SELECT * FROM user WHERE ID = '".$_SESSION['AdminID']."'")->fetch_assoc()['Status']) $status1 = $status2;
+
+                    if($name1 == '' || $phone1 == '' || $email1 == '' || $address1 == '') $_SESSION['per']['error'] = '<p>Заполните все поля!</p>';
+                    elseif($password1 !== $repassword1) $_SESSION['per']['error'] = "<p>Пароли не совпадают!</p>";
+                    elseif(!is_numeric($phone1)) $_SESSION['per']['error'] = "<p>Неверный номер телефона!</p>";
+                    elseif(!(strpos($email1, '@') && strpos($email1, '.'))) $_SESSION['per']['error'] = "<p>Введите корректный email!</p>";
+                    elseif($status1 >= $mysql->query("SELECT * FROM user WHERE ID = '".($_SESSION['AdminID'] ?? 0)."'")->fetch_assoc()['Status'] && ($_SESSION['AdminID'] ?? '') != 0 && isset($_SESSION['AdminID'])) $_SESSION['per']['error'] = "<p>Вы можете назначить пользователю уровень админимтратора только меньше своего!</p>";
+                    elseif($status1 < 0) $_SESSION['per']['error'] = "<p>Вы не можете задавать отрицательный уровень админимтратора!</p>";
+                    else
+                    {
+                        if($status1 == '') $status1 = $mysql->query("SELECT * FROM user WHERE ID = '$UserID'")->fetch_assoc()['Status'];
+                        if($password1 == '') $passwordHash = $mysql->query("SELECT * FROM user WHERE ID = '$UserID'")->fetch_assoc()['Password_hash'];
+                        else $passwordHash = hash('sha3-256', $password1);
+                        $stmt = $mysql->prepare("UPDATE user SET Name = ?, Status = ?, Phone_number = ?, Email = ?, Delivery_address = ?, Password_hash = ? WHERE Id = ?");
+                        $stmt->bind_param("siisssi", $name1, $status1, $phone1, $email1, $address1, $passwordHash, $UserID);
+                        $stmt->execute();
+                    }
+                } {% endcomment %}
+    <div class="inline-block w-[1280px]">
+        <div class="relative text-[20px] font-['Roboto'] w-[900px] mt-[-100px] ml-[200px] p-[15px] rounded-[25px] border border-black border-b-[7px] border-r-[3px] bg-[#619648] text-white">
+            <p>Вы: {{ user.name }}</p>
+            <p>Номер телефона: {{ user.phone_number }}</p>
+            <p>Электронная почта: {{ user.email }}</p>
+            <p>Адрес доставки: {{ user.delivery_address }}</p>
+            <p>ID пользователя: {{ user.id }}</p>
+            <p>Хэш пароля: {{ user.password_hash }}</p>
+        </div>
+            {% comment %} if($status > 0 || ($_SESSION['AdminID'] ?? '') == 0 || $status < $mysql->query("SELECT * FROM user WHERE ID = '".($_SESSION['AdminID'] ?? 0)."'")->fetch_assoc()['Status'])
+            <p>Уровень администратора: {{ user.status }}</p> {% endcomment %}
+            
+            {% comment %} $_SESSION['per']['error'] ?? ''
+            unset($_SESSION['per']['error']); {% endcomment %}
+        {% comment %} <div class="inline-block text-center justify-center ml-[285px]">
+            <form method='POST' class="relative bg-[#707070] w-[500px] mt-[50px] p-[15px] rounded-[25px] border border-black border-b-[7px] border-r-[3px] space-y-4 ml-[100px] text-center font-['Roboto']">
+                <h3 class="text-[30px] font-['Roboto']">Изменить данные</h3>
+                {% csrf_token %} {% endcomment %}
+                {% comment %} {{ form.as_p }} {% endcomment %}
+                {% comment %} <input type='text' name='name' placeholder='ФИО' value='$name1'>
+                <input type='text' name='phone' placeholder='телефон' value='$phone1'>
+                <input type='text' name='email' placeholder='email' value='$email1'>
+                <input type='text' name='address' placeholder='адрес доставки' value='$address1'>
+                <input type='text' name='password' placeholder='придумайте пароль' value='$password1'>
+                <input type='text' name='repassword' placeholder='повторите пароль' value='$repassword1'> {% endcomment %}
+                {% comment %} if(isset($_SESSION['AdminID']) && ($_SESSION['UserID'] ?? '') != 0 && ($_SESSION['UserID'] ?? '') != ($_SESSION['AdminID'] ?? '') && (($_SESSION['AdminID'] ?? '') == 0 || $status < $mysql->query("SELECT * FROM user WHERE ID = '".($_SESSION['AdminID'] ?? 0)."'")->fetch_assoc()['Status']))
+                <input type='number' name='status' placeholder='уровень администратора' value='$status1'> {% endcomment %}
+                    {% comment %} <input type="submit" name="button" value="изменить" class="p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white"> {% endcomment %}
+                {% comment %} $AdminID = $_SESSION['AdminID'] ?? '';
+                $UserID = $_SESSION['UserID'] ?? ''; //echo "<h2>".$UserID."</h2>";
+                $status = $mysql->query("SELECT * FROM user WHERE ID = '$UserID'")->fetch_assoc()['Status'] ?? 0; //echo "<h2>".$status."</h2>";
+                if($status > 0 || $UserID == 0 || is_numeric($AdminID)) <a href='personal_area.php'><input type='submit' name='admin' value='режим админки'></a> {% endcomment %}
+            {% comment %} </form>
+        </div> {% endcomment %}
+        <form method='POST'>
+            {% csrf_token %}
+            <button type="submit" name="exit" class="block m-auto p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">выйти</button>
+            <button type="submit" name="delete" class="block m-auto p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">удалить аккаунт</button>
+        </form>
+            {% comment %} <?php if(isset($_SESSION['AdminID'])) echo "<form method='POST' action='product_page.php'><a href='personal_area.php'><input type='submit' name='add' value='добавить товар'></a></form>"; ?> {% endcomment %}
+        
+    </div>
+    
+{% endblock %}

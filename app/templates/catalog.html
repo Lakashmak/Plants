@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+        
+            <!-- слайдер -->
+            <div class="min-h-[514px] bg-[url('static/img/socculentum.png')] bg-cover bg-center pl-[200px] pt-16 border-b border-black">
+                <div class="w-[100px] h-2.5 mt-[400px] inline-block ml-[377px]">
+                    <div class="h-2.5 w-2.5 bg-white rounded-full float-left mr-1 ml-1.5 border-2 border-[#619648] hover:bg-[rgba(255,255,255,0.5)] hover:cursor-pointer hover:border-[rgba(255,255,255,0.5)]"></div>
+                    <div class="h-2.5 w-2.5 bg-white rounded-full float-left mr-1 ml-1.5 border-2 border-[#619648] hover:bg-[rgba(255,255,255,0.5)] hover:cursor-pointer hover:border-[rgba(255,255,255,0.5)]"></div>
+                    <div class="h-2.5 w-2.5 bg-white rounded-full float-left mr-1 ml-1.5 border-2 border-[#619648] hover:bg-[rgba(255,255,255,0.5)] hover:cursor-pointer hover:border-[rgba(255,255,255,0.5)]"></div>
+                    <div class="h-2.5 w-2.5 bg-white rounded-full float-left mr-1 ml-1.5 border-2 border-[#619648] hover:bg-[rgba(255,255,255,0.5)] hover:cursor-pointer hover:border-[rgba(255,255,255,0.5)]"></div>
+                    <div class="h-2.5 w-2.5 bg-white rounded-full float-left mr-1 ml-1.5 border-2 border-[#619648] hover:bg-[rgba(255,255,255,0.5)] hover:cursor-pointer hover:border-[rgba(255,255,255,0.5)]"></div>
+                </div>
+            </div>
+
+            <!-- популярные товары min-h-[190px] bg-white-->
+            <div class="min-h-[190px] bg-white"> 
+                <h2 class="font-bold pt-[23px] pb-[23px] text-[25pt] text-center font-['Roboto'] text-[#619648]">ТОП ТОВАРЫ</h2>
+
+                <div class="min-h-[0px] bg-[#619648] flex flex-warp justify-between pl-[180px] pr-[130px] pt-[50px] pb-[20px] border-t border-b border-black">
+                {% for product in products %} <!-- for($product_id = 1; $product_id <= 3; $product_id++)-->
+                    <div class="w-[270px] h-[330px] p-[10px] border border-black border-b-[7px] border-r-[3px] text-center mr-[40px] mb-[40px] text-[16pt] bg-[#707070] font-['Roboto'] rounded-[35px]">
+                        <img src="{{ product.image.url }}" class='w-[200px] h-[200px] rounded-[25px] mx-auto'>
+                        <h3 class='font-bold text-2xl'>{{ product.name }}</h3>
+                        <span class='font-bold'>${{ product.price }}</span>
+                        <form method='GET' action="{% url 'product_page' id=product.id %}">
+                            <input type='submit' name="shop[{{ product.id }}]" value='КУПИТЬ' class="w-[100px] h-[30px] border-[5px] border-[#619648] rounded-[15px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <form method='POST' class="pt-[30px] text-center">
+        {% csrf_token %}
+        <div class="bg-[#7f7f7f] p-[15px] w-[200px] border border-black border-b-[7px] border-r-[3px] rounded-[10px] m-auto">
+            <h3>выберете способ оплаты</h3>
+            <p class="inline left text-[20pt]">К оплате: </p><span class="left text-[20pt] ml-[10px]">${{ summ }}</span>
+            <div class="w-[150px] h-[100px] mt-[30px] float-none">
+                <div class="float-left">
+                    <input type='radio' name='pay' value='Sberpay'>
+                    <span class="text-[16pt] m-[0px]">Sberpay</span>
+                </div>
+                <div class="float-left mr-20">
+                    <input type='radio' name='pay' value='СБП'>
+                    <span class="text-[16pt] m-[0px]">СБП</span>
+                </div>
+                <div class="float-left">
+                    <input type='radio' name='pay' value='Qiwi'>
+                    <span class="text-[16pt] m-[0px]">Qiwi</span>
+                </div>
+            </div>
+        </div>
+        <input type='submit' name='btn' value="Оплатить" class="p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">
+    </form>
+
+{% endblock %}

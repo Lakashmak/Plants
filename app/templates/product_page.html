@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+            {% comment %} {% if  %} {% comment %} if(isset($_POST['add'])) {% endcomment %} <!--
+                $conn->query("INSERT INTO product (ID, Name, Image, Price, Description, Color_ID, Effect_ID, Quantity) VALUES (NULL, 'Новый товар', 'ссылка на изображение', '0.00', 'Опишите товар', 1, 1, 0)");
+                $product_id = $conn->insert_id;
+                header("Location: product_page.php?shop[$product_id]"); -->
+            {% comment %} {% endif %} {% endcomment %} <!--
+            unset($_SESSION['pro']);
+            if(isset($_POST['delete'])) $conn->query("DELETE FROM product WHERE ID = '$product_id'");
+            $result = $conn->query("SELECT * FROM product WHERE ID = '$product_id'");
+            if($result === false) $product_id = 0;
+            elseif($result->num_rows == 0) $product_id = 0; -->
+            {% comment %} {% if  %} {% comment %} if($product_id == 0) {% endcomment %} <!--
+                if(!isset($_POST['delete'])) echo "  <h2>товар не найден!</h2>"; //echo "<div class='product-text'>"; //echo "</div>";
+                else echo "  <h2>товар удалён!</h2>";
+                exit; -->
+            {% comment %} {% endif %} {% endcomment %}
+            {% comment %} {% if  %} {% comment %} else {% endcomment %}
+                {% comment %} {% if  %} {% comment %} if(isset($_POST['button'])) {% endcomment %} <!--
+                    $name1 = $_SESSION['pro']['name'] = $_POST['name'] ?? '';
+                    $image1 = $_SESSION['pro']['image'] = $_POST['image'] ?? '';
+                    $price1 = $_SESSION['pro']['price'] = $_POST['price'] ?? 0;
+                    $description1 = $_SESSION['pro']['description'] = $_POST['description'] ?? '';
+                    // $color_ID1 = $_SESSION['pro']['color_ID'] = $_POST['color_ID'] ?? 0;
+                    // $effect_ID1 = $_SESSION['pro']['effect_ID'] = $_POST['effect_ID'] ?? 0;
+
+                    if($name1 == '' || $image1 == '' || $price1 == '' || $description1 == '') $_SESSION['pro']['error'] = '<p>Заполните все поля!</p>';
+                    elseif(!is_numeric($price1)) $_SESSION['pro']['error'] = "<p>Неверно указана цена!</p>";
+                    else
+                    {
+                        $stmt = $conn->prepare("UPDATE product SET Name = ?, Image = ?, Price = ?, Description = ? WHERE ID = ?");
+                        $stmt->bind_param("ssisi", $name1, $image1, $price1, $description1, $UserID);
+                        $stmt->execute();
+                    } -->
+                {% comment %} {% endif %} {% endcomment %}
+                <!--$name = $conn->query("SELECT * FROM product WHERE id = '$product_id'")->fetch_assoc()['name'];
+                $image = $conn->query("SELECT * FROM product WHERE id = '$product_id'")->fetch_assoc()['image'];
+                $price = $conn->query("SELECT * FROM product WHERE id = '$product_id'")->fetch_assoc()['price'];
+                $description = $conn->query("SELECT * FROM product WHERE id = '$product_id'")->fetch_assoc()['description'];
+                // $color_ID = $conn->query("SELECT * FROM product WHERE id = '$product_id'")->fetch_assoc()['color_id'];
+                // $color = $conn->query("SELECT * FROM color WHERE id = '$color_ID'")->fetch_assoc()['name'];
+                // $effect_ID = $conn->query("SELECT * FROM product WHERE id = '$product_id'")->fetch_assoc()['effect_id'];
+                // $effect = $conn->query("SELECT * FROM effect WHERE id = '$effect_ID'")->fetch_assoc()['name'];-->
+                
+                <div class='product-button'>
+                    <h2>ID товара: {{ product.id }}</h2>
+                    <p></p>
+                    <img src="{{ product.image.url }}" class='product-img'>
+                    <span>${{ product.price }}</span>
+                    <form method='POST' action="{% url 'basket' %}">
+                        <input type='submit' name="shop[{{ product.id }}]" value='ДОБАВИТЬ В КОРЗИНУ'>
+                        <input type='number' name='quantity' value='1'>
+                        {% csrf_token %}
+                    </form>
+                {% comment %} // echo $_SESSION['product']['error'] ?? '<p></p>'; {% endcomment %}
+                {% comment %} // unset($_SESSION['product']['error']); {% endcomment %}
+                {% comment %} // echo "  <h2>Характеристики товара:</h2>"; {% endcomment %}
+                {% comment %} // echo "  <h3>Цвет: ".$color."</h3>"; {% endcomment %}
+                {% comment %} // echo "  <h3>Эффект: ".$effect."</h3>"; {% endcomment %}
+                </div>
+                {% comment %} // echo "<div class='product-text'>"; {% endcomment %}
+                {% comment %} // echo "  <h2>".$name."</h2>"; {% endcomment %}
+                {% comment %} // echo "  <p>".$description."</p>"; {% endcomment %}
+                <div class='w-[445px] min-h[318px] h-auto float-left pl-10 border border-black p-20 ml-20 rounded-[35px] bg-[#619648] text-white border-b-[7px] border-r-[3px]'>
+                    <h2 class="text-[50px] font-['Roboto']">{{ product.name }}</h2>
+                    <p class="text-[16pt] leading-[1.5] mt-5 mb-5 font-['Roboto']">{{ product.description }}</p>
+                </div>
+                {% comment %} //echo array_search($_GET['shop'][0], $_GET['shop']); {% endcomment %}
+                {% comment %} {% if  %} {% comment %} if(isset($_SESSION['AdminID'])) {% endcomment %}
+                    <div class='admin'>
+                        <form method='POST'>
+                            <h2>ИЗМЕНЕНИЕ ТОВАРА</h2>
+                    <!-- $name1 = $_SESSION['pro']['name'] ?? $name; if($name1 == '') $name1 = $name;
+                    $image1 = $_SESSION['pro']['image'] ?? $image; if($image1 == '') $image1 = $image;
+                    $price1 = $_SESSION['pro']['price'] ?? $price; if($price1 == '') $price1 = $price;
+                    $description1 = $_SESSION['pro']['description'] ?? $description; if($description1 == '') $description1 = $description; -->
+                    {% comment %} $color_ID1 = $_SESSION['pro']['color_ID'] ?? $color_ID; if($color_ID1 == '') $color_ID1 = $color_ID; {% endcomment %}
+                    {% comment %} $effect_ID1 = $_SESSION['pro']['effect_ID'] ?? $effect_ID; if($effect_ID1 == '') $effect_ID1 = $effect_ID; {% endcomment %}
+                            <input type='text' name='name' placeholder='название' value="{{ product1.name }}">
+                            <input type='text' name='image' placeholder='ссылка на изображение' value="{{ product1.image.url }}">
+                            <input type='text' name='price' placeholder='цена' value="{{ product1.price }}">
+                            <input type='text' name='description' placeholder='описание' value="{{ product1.description }}">
+                    {% comment %}      <input type='number' name='color_ID' placeholder='ID цвета' value='$color_ID1'> {% endcomment %}
+                    {% comment %}      <input type='number' name='effect_ID' placeholder='ШВ эффекта' value='$effect_ID1'> {% endcomment %}
+                            <a href='personal_area.php'><input type='submit' name='button' value='изменить'></a>
+                            <a href='personal_area.php'><input type='submit' name='delete' value='удвлить товар'></a>
+                        </form>
+                    </div>
+                {% comment %} {% endif %} {% endcomment %}
+            {% comment %} {% endif %} {% endcomment %}
+
+{% endblock %}

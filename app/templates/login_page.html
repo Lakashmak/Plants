@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+            {% comment %} <?php
+                if(isset($_POST['button']))
+                {
+                    $email = $_SESSION['log']['email'] = $_POST['email'] ?? ''; //echo '<p>Вы ввели: '.$email.'</p>';
+                    $password = $_SESSION['log']['password'] = $_POST['password'] ?? '';
+                    if($email == '' || $password == '')
+                    {
+                        if($email == '') echo '<p>Введите логин и пароль!</p>';
+                        else echo '<p>Введите пароль!</p>';
+                    }
+                    else
+                    {
+                        $result = $mysql->query("SELECT * FROM user WHERE Email = '$email'"); //print_r($result);
+                        if($result !== false && $result->num_rows > 0) //print_r($result->fetch_assoc());
+                        {
+                            $UserPassword = $result->fetch_assoc()["Password_hash"];
+                            $passwordHash = hash('sha3-256', $password); //echo $passwordHash;
+                            if($UserPassword === $passwordHash)
+                            {
+                                $result = $mysql->query("SELECT * FROM user WHERE Email = '$email'");
+                                $_SESSION['UserID'] = $result->fetch_assoc()["ID"]; //echo $_SESSION['UserID'];
+                                header("Location: personal_area.php");
+                                exit;
+                            }
+                            else echo "<p>неверный пароль!</p>";
+                        }
+                        if($result == false) echo "<p>что-то пошло не так!</p>";
+                        elseif(!($result->num_rows > 0)) echo "<p>пользователь не найден!</p>";
+                    }
+                }
+            ?> {% endcomment %}
+            <div class="inline-block text-center justify-center ml-[285px]">
+                <form method='POST' class="relative bg-[#707070] w-[300px] mt-[50px] p-[15px] rounded-[25px] border border-black border-b-[7px] border-r-[3px] space-y-4 mx-auto text-center font-['Roboto']">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">Войти</button>
+                </form>
+                <a href="{% url 'registration' %}"><button type="submit" class="p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">Зарегистрироваться</button></a>
+            </div>
+
+{% endblock %}

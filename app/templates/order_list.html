@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+    {% comment %} if(isset($_POST['repeat']))
+    {
+        $order_ID = key($_POST['repeat']) ?? 0; //echo $order_ID;
+        if($order_ID != 0)
+        {
+            unset($_SESSION['basket']);
+            $lines = $mysql->query("SELECT * FROM orders WHERE Order_ID = '$order_ID'");
+            while($row = $lines->fetch_assoc() ?? null) $_SESSION['basket'][$row['Product_ID']] = $row['Quantity'];
+            header("Location: basket.php");
+        }
+        else echo "<h1>Ошибка!</h1>";
+    }
+    if(isset($_POST['delete']))
+    {
+        $order_ID = key($_POST['delete']) ?? 0;
+        $mysql->query("DELETE FROM orders WHERE Order_ID = '$order_ID'");
+        $mysql->query("DELETE FROM order_data WHERE ID = '$order_ID'");
+        echo "<h2>Заказ №$order_ID отменён!</h2>";
+    } {% endcomment %}
+    <div class="pt-[20px]">
+        {% for order in orders_data %} {% comment %} foreach($orders as $order_ID) {% endcomment %}
+            <div class="ml-[375px] mb-[20px] bg-[#7f7f7f] p-[15px] w-[500px] border border-black border-b-[7px] border-r-[3px] rounded-[10px] text-[16pt]">
+                <h1>Заказ №: {{ order.id }}</h1>
+                <h3>Дата оформления заказа: {{ order.date }}</h3>
+                <h3 class="mb-[20px]">Способ оплаты: {{ order.pay }}</h3>
+                {% for product in order.products %} {% comment %} while($row = $lines->fetch_assoc() ?? null)  {% endcomment %}
+                    <h3>{{ product.name }}: ${{ product.price }} x {{ product.quantity }} = ${{ product.priceS }}</h3>
+                {% endfor %}
+                <h2 class="mt-[20px]">ИТОГО: ${{ order.summ }}</h2>
+                <form method='POST'>
+                    {% csrf_token %}
+                    <input type='submit' name="repeat[{{ order.id }}]" value='ПОВТОРИТЬ' class="p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">
+                    <input type='submit' name="delete[{{ order.id }}]" value='ОТМЕНИТЬ' class="p-[5px] border-[5px] border-[#619648] rounded-[25px] bg-white text-[12pt] cursor-pointer focus:outline-none font-['Roboto'] mt-[5px] hover:border-white hover:bg-[#7f7f7f] hover:text-white">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+    {% comment %} if($error) echo "<h1>У ВАС НЕТ ЗАКАЗОВ!</h1>"; {% endcomment %}
+
+{% endblock %}
